@@ -169,4 +169,5 @@ for item in receiver.listen():
                 no.append(str(tuple[0]))
                 qz.append(str(tuple[1]))
             concat = ','.join(no) + '$%^' + ','.join(qz)
+
             clientSender.publish('similarResult', reqParamList[0] + '!@#' + concat)
