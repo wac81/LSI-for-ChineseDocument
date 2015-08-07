@@ -134,6 +134,10 @@ def delNOTNeedWords(content,stopwords):
 
 # p = re.compile('\s+')
 
+# 第一个参数需要分割的文件位置。
+# 第二个参数分割完文件存储目录。
+# 第三个参数最多分割的文件数量，0表示分割完所有文件。
+# 第四个参数表示拒绝文档大小，小于此数值的全都不存储不做处理
 def spiltDocument(spiltfileloc,fileSavedPath='./a/',total=0,rejectOfDocSize=400):
     # print fileSavedPath
     mkdir(fileSavedPath)

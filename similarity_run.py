@@ -9,16 +9,23 @@ from multiprocessing import Pool
 
 import os
 import sys
+import shutil
 sys.path.append("./program/")
 # def f(x):
     # return corpora.Dictionary(jieba.lcut('我们可以'))
 
 if __name__ == '__main__':
 	filesaved = 'article.sql'
-	docpath='./a/'
+	docpath='./news/'
+	lsipath='./lsi/'
+	if os.path.exists(docpath):
+		shutil.rmtree(docpath)  #删除目录
+	if os.path.exists(lsipath):
+		shutil.rmtree(lsipath)  #删除目录
+
 	if  not os.path.exists(docpath):
 		from ar import spiltDocument
-		spiltDocument(filesaved,docpath,100,100)
+		spiltDocument(filesaved,docpath,100,100)   #最多分割100个文件，100字符内的文件抛掉不处理
 
 	from dict_stream_train import getDictionary
 	dict=getDictionary()

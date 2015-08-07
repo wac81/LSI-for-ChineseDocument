@@ -9,7 +9,7 @@ from pprint import pprint
 import sys
 import os
 
-docpath = './a/'
+docpath = './news/'
 # project_path = './'
 # dictionary=None
 dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
@@ -48,8 +48,8 @@ def getFile(docpath):
 
 
 
-# 语料库
-def getCorpus(docpath='./a/'):
+# 语料库 docpath 为文件存储位置
+def getCorpus(docpath='./news/'):
     # 加载字典
     # dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
     # dictionary = dict

@@ -60,7 +60,7 @@ def getFile(docpath='./a/'):
 #     return jieba.lcut(x)
 
 # dictionary= parallel_attribute(some_function)
-def getDictionary(docpath='./a/'):
+def getDictionary(docpath='./news/'):
 	stopwords = codecs.open('stopwords.txt', encoding='UTF-8').read()
 	stopwordSet = set(stopwords.split('\r\n'))
 	print('All' + str(len(stopwordSet)) + 'stopwords')
