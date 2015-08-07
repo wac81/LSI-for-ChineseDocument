@@ -17,7 +17,7 @@ sys.path.append("./program/")
 if __name__ == '__main__':
 	filesaved = 'article.sql'
 	docpath='./news/'
-	lsipath='./ls/'
+	lsipath='./lsi/'
 	if os.path.exists(docpath):
 		shutil.rmtree(docpath)  #删除目录
 	if os.path.exists(lsipath):
