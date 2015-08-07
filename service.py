@@ -119,6 +119,7 @@ for item in receiver.listen():
             clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' + str(pos))
             # clientSender.publish('sentimentsResult',  str(pos))
 
+        ## viva 定制，只接口返回
         # elif item['channel'] == 'similar':
         #
         #     doc = reqParamList[1]
@@ -154,9 +155,7 @@ for item in receiver.listen():
 
         elif item['channel'] == 'similar':
             doc = reqParamList[1]
-            # vec_bow = dictionary.doc2bow([word for word in jieba.lcut(doc) if word not in stopwordSet])
-            doc= delstopwords(doc)
-            # print corpus[107]
+            doc = delstopwords(doc)
             vec_bow = dictionary.doc2bow(jieba.lcut(doc))
             vec_lsi = lsi[vec_bow]
             sims = index[vec_lsi]
@@ -165,9 +164,12 @@ for item in receiver.listen():
             # sorted(word_similarities.items(), key=lambda x: x[1],reverse=True)
             no = []
             qz = []
-            for tuple in sort_sims[0:10]:
-                no.append(str(tuple[0]))
-                qz.append(str(tuple[1]))
+            for i in range(len(sort_sims[0:10])):
+                if sort_sims[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
+                # for tuple2 in sort_sims[0:10]:
+                if (i<10 and sort_sims[i][1]-sort_sims[i+1][1])>0.0015:  #将分数不接近的两个加入数组
+                    no.append(str(sort_sims[i][0]))
+                    qz.append(str(sort_sims[i][1]))
             concat = ','.join(no) + '$%^' + ','.join(qz)
 
             clientSender.publish('similarResult', reqParamList[0] + '!@#' + concat)
