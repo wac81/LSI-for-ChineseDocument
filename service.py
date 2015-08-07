@@ -13,8 +13,8 @@ import jieba.posseg as pseg
 import redis
 import sys
 import os
-import pos_neg_senti_dict_feature as pn
-import textprocessing as tp
+# import pos_neg_senti_dict_feature as pn
+# import textprocessing as tp
 from gensim import corpora, models, similarities
 
 reload(sys)
@@ -106,17 +106,17 @@ for item in receiver.listen():
 
             clientSender.publish('wordFlagResult', reqParamList[0] + '!@#' + wordFlagResult)
 
-        elif item['channel'] == 'sentiments':
-
-            # 情感分析
-            wordList = pseg.cut(reqParamList[1])
-
-            sentiment_score =pn.single_review_sentiment_score(reqParamList[1].encode('utf-8'))
-            print sentiment_score
-
-            pos = sentiment_score[2]/(sentiment_score[2]+sentiment_score[3])
-
-            clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' + str(pos))
+        # elif item['channel'] == 'sentiments':
+        #
+        #     # 情感分析
+        #     wordList = pseg.cut(reqParamList[1])
+        #
+        #     sentiment_score =pn.single_review_sentiment_score(reqParamList[1].encode('utf-8'))
+        #     print sentiment_score
+        #
+        #     pos = sentiment_score[2]/(sentiment_score[2]+sentiment_score[3])
+        #
+        #     clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' + str(pos))
             # clientSender.publish('sentimentsResult',  str(pos))
 
         ## viva 定制，只接口返回
