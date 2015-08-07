@@ -22,7 +22,7 @@ sys.setdefaultencoding('utf-8')
 
 # project_path = '/Users/shenxu/Workspace/nlp/'
 project_path = './'
-docpath='./news'
+docpath='/home/workspace/news'
 
 stopwords = codecs.open(project_path + 'stopwords.txt', encoding='UTF-8').read()
 stopwordSet = set(stopwords.split('\r\n'))
@@ -119,11 +119,41 @@ for item in receiver.listen():
             clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' + str(pos))
             # clientSender.publish('sentimentsResult',  str(pos))
 
+        # elif item['channel'] == 'similar':
+        #
+        #     doc = reqParamList[1]
+        #
+        #
+        #     # vec_bow = dictionary.doc2bow([word for word in jieba.lcut(doc) if word not in stopwordSet])
+        #     doc= delstopwords(doc)
+        #     # print corpus[107]
+        #     vec_bow = dictionary.doc2bow(jieba.lcut(doc))
+        #     vec_lsi = lsi[vec_bow]
+        #     sims = index[vec_lsi]
+        #     # print sims
+        #     sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
+        #     # sorted(word_similarities.items(), key=lambda x: x[1],reverse=True)
+        #     print sort_sims[1]
+        #     no = []
+        #     qz = []
+        #     for i in range(len(sort_sims[0:10])):
+        #         if sort_sims[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
+        #         # for tuple2 in sort_sims[0:10]:
+        #         if (i<10 and sort_sims[i][1]-sort_sims[i+1][1])>0.0015:  #将分数不接近的两个加入数组
+        #             files = os.listdir(docpath)
+        #             # print files[tuple[0]]
+        #             fileid=files[sort_sims[i][0]]
+        #             fileid=fileid.split('_')
+        #             no.append(fileid[0])
+        #             qz.append(str(sort_sims[i][1]))
+        #
+        #     concat = ','.join(no) + '$%^' + ','.join(qz)
+        #     print concat
+        #     clientSender.publish('similarResult', reqParamList[0] + '!@#' + concat)
+
+
         elif item['channel'] == 'similar':
-
             doc = reqParamList[1]
-
-
             # vec_bow = dictionary.doc2bow([word for word in jieba.lcut(doc) if word not in stopwordSet])
             doc= delstopwords(doc)
             # print corpus[107]
@@ -133,18 +163,10 @@ for item in receiver.listen():
             # print sims
             sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
             # sorted(word_similarities.items(), key=lambda x: x[1],reverse=True)
-            print sort_sims[1]
             no = []
             qz = []
             for tuple in sort_sims[0:10]:
-                if tuple[1]<0.98:  #将1：1相似度的文件剔除,也将非常接近的两篇文章剔除
-                    files = os.listdir(docpath)
-                    
-                    # print files[tuple[0]]
-                    fileid=files[tuple[0]]
-                    fileid=fileid.split('_')
-                    no.append(fileid[0])
-                    qz.append(str(tuple[1]))
+                no.append(str(tuple[0]))
+                qz.append(str(tuple[1]))
             concat = ','.join(no) + '$%^' + ','.join(qz)
-            print concat
             clientSender.publish('similarResult', reqParamList[0] + '!@#' + concat)
