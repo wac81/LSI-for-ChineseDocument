@@ -167,7 +167,7 @@ for item in receiver.listen():
             for i in range(len(sort_sims[0:10])):
                 if sort_sims[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
                 # for tuple2 in sort_sims[0:10]:
-                if (i<10 and sort_sims[i][1]-sort_sims[i+1][1])>0.0015:  #将分数不接近的两个加入数组
+                if (i<10 and (sort_sims[i][1]-sort_sims[i+1][1])>0.0015):  #将分数不接近的两个加入数组
                     no.append(str(sort_sims[i][0]))
                     qz.append(str(sort_sims[i][1]))
             concat = ','.join(no) + '$%^' + ','.join(qz)
