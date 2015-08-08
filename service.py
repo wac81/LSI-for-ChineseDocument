@@ -106,52 +106,6 @@ for item in receiver.listen():
 
             clientSender.publish('wordFlagResult', reqParamList[0] + '!@#' + wordFlagResult)
 
-        # elif item['channel'] == 'sentiments':
-        #
-        #     # 情感分析
-        #     wordList = pseg.cut(reqParamList[1])
-        #
-        #     sentiment_score =pn.single_review_sentiment_score(reqParamList[1].encode('utf-8'))
-        #     print sentiment_score
-        #
-        #     pos = sentiment_score[2]/(sentiment_score[2]+sentiment_score[3])
-        #
-        #     clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' + str(pos))
-            # clientSender.publish('sentimentsResult',  str(pos))
-
-        ## viva 定制，只接口返回
-        # elif item['channel'] == 'similar':
-        #
-        #     doc = reqParamList[1]
-        #
-        #
-        #     # vec_bow = dictionary.doc2bow([word for word in jieba.lcut(doc) if word not in stopwordSet])
-        #     doc= delstopwords(doc)
-        #     # print corpus[107]
-        #     vec_bow = dictionary.doc2bow(jieba.lcut(doc))
-        #     vec_lsi = lsi[vec_bow]
-        #     sims = index[vec_lsi]
-        #     # print sims
-        #     sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
-        #     # sorted(word_similarities.items(), key=lambda x: x[1],reverse=True)
-        #     print sort_sims[1]
-        #     no = []
-        #     qz = []
-        #     for i in range(len(sort_sims[0:10])):
-        #         if sort_sims[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
-        #         # for tuple2 in sort_sims[0:10]:
-        #         if (i<10 and sort_sims[i][1]-sort_sims[i+1][1])>0.0015:  #将分数不接近的两个加入数组
-        #             files = os.listdir(docpath)
-        #             # print files[tuple[0]]
-        #             fileid=files[sort_sims[i][0]]
-        #             fileid=fileid.split('_')
-        #             no.append(fileid[0])
-        #             qz.append(str(sort_sims[i][1]))
-        #
-        #     concat = ','.join(no) + '$%^' + ','.join(qz)
-        #     print concat
-        #     clientSender.publish('similarResult', reqParamList[0] + '!@#' + concat)
-
 
         elif item['channel'] == 'similar':
             doc = reqParamList[1]
@@ -164,12 +118,31 @@ for item in receiver.listen():
             # sorted(word_similarities.items(), key=lambda x: x[1],reverse=True)
             no = []
             qz = []
-            for i in range(len(sort_sims[0:10])):
-                if sort_sims[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
-                # for tuple2 in sort_sims[0:10]:
-                if (i<10 and (sort_sims[i][1]-sort_sims[i+1][1])>0.0015):  #将分数不接近的两个加入数组
-                    no.append(str(sort_sims[i][0]))
-                    qz.append(str(sort_sims[i][1]))
-            concat = ','.join(no) + '$%^' + ','.join(qz)
+            tempqz=[]
+            ss=sort_sims[0:10]
+            for i in range(len(ss)):
+                if ss[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
 
+                #取文件真实id，viva
+                # files = os.listdir(docpath)
+                # fileid=files[ss[i][0]]
+                # fileid=fileid.split('_')
+                # singleno = fileid[0]
+                # singleqz = str(ss[i][1])
+
+                #取正常文章序号
+                singleno = str(ss[i][0])
+                singleqz = str(ss[i][1])
+                if len(qz)==0:
+                    no.append(singleno)
+                    qz.append(singleqz)
+                    tempqz.append(singleqz)
+
+                if abs(float(tempqz[len(tempqz)-1])-ss[i][1])>0.0015:
+                    no.append(singleno)
+                    qz.append(singleqz)
+                tempqz.append(singleqz)
+
+            concat = ','.join(no) + '$%^' + ','.join(qz)
+            print concat
             clientSender.publish('similarResult', reqParamList[0] + '!@#' + concat)
