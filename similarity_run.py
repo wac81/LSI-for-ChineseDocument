@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
 	if  os.path.exists(docpath):
 		from ar import filebyfileHandle
-		filebyfileHandle(docpath,1000,100)   #最多分割100个文件，100字符内的文件抛掉不处理
+		filebyfileHandle(docpath,0,100)   #最多分割100个文件，100字符内的文件抛掉不处理
 
 	from dict_stream_train import getDictionary
 	dict=getDictionary()

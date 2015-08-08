@@ -133,28 +133,26 @@ def delNOTNeedWords(content,stopwords):
 def filebyfileHandle(fileSavedPath='./news/',total=0,rejectOfDocSize=400):
     # mkdir(fileSavedPath)
     # fp = open(fileSavedPath, 'r')
+    x = 0
     list = os.listdir(fileSavedPath)
     for file in list:
         filepath = os.path.join(fileSavedPath,file)
         if not os.path.isdir(filepath):
-            fp = open(filepath, 'r')
+            fp = open(filepath, 'r+')
             content=''
+            
             for line in fp:
                 content = content + line
-            print content
+            # print content
             content = content.replace(r'\n', '').replace(r'▉', '').replace(r'\t', '').replace(' ', '')
             # content = re.sub(p, '', content)
             content = stripTags(content)
             content = delNOTNeedWords(content,stopwords)
             if len(content) > rejectOfDocSize:
-                try:
-                    fnew = open(filepath, 'w')
-                except:
-                # print EOFError
-                    continue
-                # fnew.write(stripTags(content.decode('gbk','ignore').encode('utf-8','ignore')))
-                fnew.write(stripTags(content))
-                fnew.close()
+                fp.write(stripTags(content))
+                fp.close()
+                x = x + 1
+                print x
 
 
 
