@@ -13,8 +13,8 @@ import jieba.posseg as pseg
 import redis
 import sys
 import os
-# import pos_neg_senti_dict_feature as pn
-# import textprocessing as tp
+import pos_neg_senti_dict_feature as pn
+import textprocessing as tp
 from gensim import corpora, models, similarities
 
 reload(sys)
@@ -105,6 +105,22 @@ for item in receiver.listen():
                 wordFlagResult += words.word + '$%^' + words.flag + '$%^'
 
             clientSender.publish('wordFlagResult', reqParamList[0] + '!@#' + wordFlagResult)
+
+
+        elif item['channel'] == 'sentiments':
+            # 情感分析
+
+            sr=pn.single_review_sentiment_score(reqParamList[1].decode('utf8'))
+            print sr
+            pos=sr[2]
+            neg=sr[3]
+            if (pos==0 and neg ==0):pos=0.5
+            elif  (pos==0 and neg !=0):pos=0.1
+            elif (pos!=0 and neg !=0):pos=pos/(pos+neg)
+            print pos
+            # sentimentsResult += words.word + '$%^' + words.flag + '$%^'
+
+            clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' +str(pos))
 
 
         elif item['channel'] == 'similar':
