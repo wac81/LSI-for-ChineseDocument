@@ -20,6 +20,7 @@ import pos_neg_senti_dict_feature as pn
 import textprocessing as tp
 #情感with机器学习
 import pos_neg_ml_feature as pos_neg_ml
+
 from gensim import corpora, models, similarities
 
 reload(sys)
@@ -128,7 +129,9 @@ for item in receiver.listen():
             #基于机器学习的情感分析
             s = []
             s.append(reqParamList[1].decode('utf8'))
-            pred = pos_neg_ml.clf.prob_classify_many(pos_neg_ml.extract_features(s))
+
+            clf = pos_neg_ml.getPKLfile()
+            pred = clf.prob_classify_many(pos_neg_ml.extract_features(s))
             pred2 = []
             for i in pred:
                 pred2.append([i.prob('pos'), i.prob('neg')])

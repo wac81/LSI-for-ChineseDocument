@@ -10,6 +10,8 @@ Chinese word segmentation, postagger, sentence cutting and stopwords filtering f
 import xlrd
 import jieba
 import jieba.posseg
+import sys
+sys.path.append("Preprocessing-module/")
 #jieba.load_userdict('c:/Python27/Lib/site-packages/jieba-0.36/jieba/userdict.txt') #Load user dictionary to increse segmentation accuracy
 
 
@@ -207,7 +209,7 @@ def seg_fil_senti_excel(filepath, sheetnum, colnum):
         review_data.append(segmentation(cell, 'list')) # Seg every reivew
     
     # Read txt file contain sentiment stopwords
-    sentiment_stopwords = get_txt_data('sentiment_stopword.txt', 'lines')
+    sentiment_stopwords = get_txt_data('./sentiment_stopword.txt', 'lines')
  
     # Filter stopwords from reviews
     seg_fil_senti_result = []
