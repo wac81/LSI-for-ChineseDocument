@@ -5,7 +5,8 @@ import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 import sys
 sys.path.append("./Chinese-Sentiment-master/")
-sys.path.append("./Chinese-Sentiment-master/Preprocessing module")
+sys.path.append("./Preprocessing-module")
+sys.path.append("./Machine-learning-features")
 import codecs
 import jieba
 import jieba.analyse
@@ -13,8 +14,12 @@ import jieba.posseg as pseg
 import redis
 import sys
 import os
+
+#情感
 import pos_neg_senti_dict_feature as pn
 import textprocessing as tp
+#情感with机器学习
+import pos_neg_ml_feature as pos_neg_ml
 from gensim import corpora, models, similarities
 
 reload(sys)
@@ -120,7 +125,16 @@ for item in receiver.listen():
             print pos
             # sentimentsResult += words.word + '$%^' + words.flag + '$%^'
 
-            clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' +str(pos))
+            #基于机器学习的情感分析
+            s = []
+            s.append(reqParamList[1].decode('utf8'))
+            pred = pos_neg_ml.clf.prob_classify_many(pos_neg_ml.extract_features(s))
+            pred2 = []
+            for i in pred:
+                pred2.append([i.prob('pos'), i.prob('neg')])
+                break
+            print pred2[0][0]
+            clientSender.publish('sentimentsResult', reqParamList[0] + '!@#' +str(pos)+'$%^'+str(pred2[0][0]))  #pos是一般情感分析，pred2[0]是机器学习情感分析
 
 
         elif item['channel'] == 'similar':

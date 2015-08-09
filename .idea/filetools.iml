@@ -5,6 +5,8 @@
       <excludeFolder url="file://$MODULE_DIR$/a" />
       <excludeFolder url="file://$MODULE_DIR$/aa" />
       <excludeFolder url="file://$MODULE_DIR$/article-20150808" />
+      <excludeFolder url="file://$MODULE_DIR$/lsi" />
+      <excludeFolder url="file://$MODULE_DIR$/lsi_" />
       <excludeFolder url="file://$MODULE_DIR$/news" />
       <excludeFolder url="file://$MODULE_DIR$/news——" />
     </content>
