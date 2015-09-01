@@ -26,6 +26,8 @@ from gensim import corpora, models, similarities
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+#jieba分词多进程默认4
+jieba.enable_parallel(4)
 # project_path = '/Users/shenxu/Workspace/nlp/'
 project_path = './'
 docpath='/home/workspace/news'

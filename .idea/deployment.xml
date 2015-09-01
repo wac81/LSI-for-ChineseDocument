@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="ACNLPservice">
-    <serverData>
-      <paths name="ACNLPservice">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/nlp" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-    </serverData>
-  </component>
+  <component name="PublishConfigData" serverName="ACNLPservice" />
 </project>

@@ -9,7 +9,10 @@ import jieba.posseg as pseg
 # clear all html tags
 # project_path = './'
 
-
+# jieba.enable_parallel(3)
+fileSavedPath='./news/'
+rejectOfDocSize=400
+x = 0
 def stripTags(s):
     ''' Strips HTML tags.
         Taken from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/440481
@@ -130,17 +133,70 @@ def delNOTNeedWords(content,stopwords):
 # dictionary = pool.map(writefile,fp)
 # pool.close()
 # pool.join()
+def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4):
+    # mkdir(fileSavedPath)
+    # fp = open(fileSavedPath, 'r')
+    x = 0
+    fileSavedPath=fileSavedPath
+    rejectOfDocSize=rejectOfDocSize
+    list = os.listdir(fileSavedPath)
+    from multiprocessing import Pool as ThreadPool
+    pool = ThreadPool(multiprocess)
+    dictionary = pool.map(dealwith_mulitpocess,  list)
+    pool.join()
+    pool.close()
+    
+    # for file in list:
+    #     filepath = os.path.join(fileSavedPath,file)
+    #     if not os.path.isdir(filepath):
+    #         fp = open(filepath, 'r+')
+    #         content=''
+            
+    #         for line in fp:
+    #             content = content + line
+    #         # print content
+    #         content = content.replace(r'\n', '').replace(r'▉', '').replace(r'\t', '').replace(' ', '')
+    #         # content = re.sub(p, '', content)
+    #         content = stripTags(content)
+    #         content = delNOTNeedWords(content,stopwords)
+    #         if len(content) > rejectOfDocSize:
+    #             fp.write(stripTags(content))
+    #             fp.close()
+    #             x = x + 1
+    #             print x
 
+def dealwith_mulitpocess(file):
+    filepath = os.path.join(fileSavedPath,file)
+    if not os.path.isdir(filepath):
+        fp = open(filepath, 'r+')
+        content=''
+
+        for line in fp:
+            content = content + line
+        # print content
+        content = content.replace(r'\n', '').replace(r'▉', '').replace(r'\t', '').replace(' ', '')
+        # content = re.sub(p, '', content)
+        content = stripTags(content)
+        content = delNOTNeedWords(content,stopwords)
+        if len(content) > rejectOfDocSize:
+            fp.write(stripTags(content))
+            fp.close()
+            # x = x + 1
+            print filepath
 
 # p = re.compile('\s+')
 
-def spiltDocument(spiltfileloc,fileSavedPath='./a/',total=0,rejectOfDocSize=400):
+# 第一个参数需要分割的文件位置。
+# 第二个参数分割完文件存储目录。
+# 第三个参数最多分割的文件数量，0表示分割完所有文件。
+# 第四个参数表示拒绝文档大小，小于此数值的全都不存储不做处理
+def spiltDocument(spiltfileloc,fileSavedPath='./news/',total=0,rejectOfDocSize=400):
     # print fileSavedPath
     mkdir(fileSavedPath)
     fp = open(spiltfileloc, 'r')
     x = 0
     for line in fp:
-        print total
+        # print total
         if (total!=0 and x>=total):return  #如果大于输入的total数量则程序终止，决定多少个
         c = str(line)
 
@@ -179,7 +235,7 @@ def spiltDocument(spiltfileloc,fileSavedPath='./a/',total=0,rejectOfDocSize=400)
                     if len(content) > rejectOfDocSize:
                         try:
                             fnew = open(
-                                fileSavedPath + '/' + str(x)+'_'+name.decode('utf-8', 'ignore') + '.txt', 'w')
+                                fileSavedPath + '/' + str(x)+name.decode('utf-8', 'ignore') + '.txt', 'w')
                         except:
                             # print EOFError
                             continue
