@@ -1,6 +1,9 @@
 # coding=utf8
 
+import logging
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
+import json
 import codecs
 import jieba
 # import jieba.analyse
@@ -18,14 +21,6 @@ app = Flask(__name__)
 project_path = './'
 docpath='/home/workspace/news'
 
-stopwords = codecs.open(project_path + 'stopwords.txt', encoding='UTF-8').read()
-# stopwordSet = set(stopwords.split('\r\n'))
-dictionary = corpora.Dictionary.load(project_path + 'lsi/' + 'viva.dict')
-corpus = corpora.MmCorpus(project_path + 'lsi/' + 'viva.mm')
-lsi = models.LsiModel.load(project_path + 'lsi/' + 'viva.lsi')
-index = similarities.MatrixSimilarity.load(project_path + 'lsi/' + 'viva.index')
-print('All loaded')
-
 @app.route('/similar/<input_text>',methods=['GET', 'POST'])
 def similar(input_text):
     re=object
@@ -36,8 +31,9 @@ def similar(input_text):
             re = input_text  # 获取GET参数，没有参数就赋值 0
         except ValueError:
             abort(404)      # 返回 404
-
-    return similar_search(re)
+    result = json.dumps(similar_search(re))
+    print result
+    return result
 
 
 @app.route('/')
@@ -81,9 +77,14 @@ def similar_search(request):
             qz.append(singleqz)
         tempqz.append(singleqz)
 
-        concat = ','.join(no) + '$%^' + ','.join(qz)
-        print concat
-        return concat
+    # concat = ','.join(no) + '$%^' + ','.join(qz)
+    concat = {'similarNO':no,'similarQZ':qz}
+    # concat = []
+    # concat.append(no)
+    # concat.append(qz)
+        # {no,qz}
+    # print concat
+    return concat
         # clientSender.publish('similarResult', reqParamList[0] + '!@#' + concat)
 
 
@@ -98,9 +99,17 @@ def delstopwords(content):
     for word, flag in words:
         if (word not in stopwords and flag not in ["/x","/zg","/uj","/ul","/e","/d","/uz","/y"]): #去停用词和其他词性，比如非名词动词等
             result += word.encode('utf-8')  # +"/"+str(w.flag)+" "  #去停用词
-            print result
+            # print result
     return result
 
 if __name__ == '__main__':
+    stopwords = codecs.open(project_path + 'stopwords.txt', encoding='UTF-8').read()
+    # stopwordSet = set(stopwords.split('\r\n'))
+    dictionary = corpora.Dictionary.load(project_path + 'lsi/' + 'viva.dict')
+    corpus = corpora.MmCorpus(project_path + 'lsi/' + 'viva.mm')
+    lsi = models.LsiModel.load(project_path + 'lsi/' + 'viva.lsi')
+    index = similarities.MatrixSimilarity.load(project_path + 'lsi/' + 'viva.index')
+    print('All loaded')
     app.run(debug=True,  port=3000)
+
 
