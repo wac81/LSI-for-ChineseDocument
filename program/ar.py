@@ -143,8 +143,9 @@ def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4)
     from multiprocessing import Pool as ThreadPool
     pool = ThreadPool(multiprocess)
     dictionary = pool.map(dealwith_mulitpocess,  list)
-    pool.join()
     pool.close()
+    pool.join()
+
     
     # for file in list:
     #     filepath = os.path.join(fileSavedPath,file)

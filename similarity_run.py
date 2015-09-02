@@ -10,10 +10,11 @@ from multiprocessing import Pool
 import os
 import sys
 import shutil
+import time
 sys.path.append("./program/")
 # def f(x):
     # return corpora.Dictionary(jieba.lcut('我们可以'))
-
+time_before = time.localtime()
 if __name__ == '__main__':
 	filesaved = 'article.sql'
 	docpath='./news/'
@@ -43,3 +44,6 @@ if __name__ == '__main__':
     # print d
     # print( corpora.Dictionary(jieba.lcut('我们可以')))
     # print(p.map(f, ['aa', 'ab', 'ac']))
+
+	print 'python run start '+list(time_before.localtime())
+	print 'end '+list(time.localtime())
