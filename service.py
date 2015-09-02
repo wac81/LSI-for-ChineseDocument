@@ -12,8 +12,7 @@ import jieba
 import jieba.analyse
 import jieba.posseg as pseg
 import redis
-import sys
-import os
+
 
 #情感
 import pos_neg_senti_dict_feature as pn
@@ -27,7 +26,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 #jieba分词多进程默认4
-jieba.enable_parallel(4)
+# jieba.enable_parallel(4)
 # project_path = '/Users/shenxu/Workspace/nlp/'
 project_path = './'
 docpath='/home/workspace/news'
@@ -65,6 +64,7 @@ def delstopwords(content):
     for word, flag in words:
         if (word not in stopwords and flag not in ["/x","/zg","/uj","/ul","/e","/d","/uz","/y"]): #去停用词和其他词性，比如非名词动词等
             result += word.encode('utf-8')  # +"/"+str(w.flag)+" "  #去停用词
+            print result
     return result
 
 

@@ -9,6 +9,25 @@ sys.path.append("./program/")
 time_before = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
 print time_before
 
+import jieba.posseg as pseg
+import codecs
+stopwords = codecs.open('stopwords.txt', encoding='UTF-8').read()
+def delstopwords(content):
+    # words = jieba.lcut(content)
+    result=''
+    # for w in words:
+    #     if w not in stopwords:
+    #         result += w.encode('utf-8')  # +"/"+str(w.flag)+" "  #去停用词
+
+    words = pseg.lcut(content)
+    for word, flag in words:
+        if (word not in stopwords and flag not in ["/x","/zg","/uj","/ul","/e","/d","/uz","/y"]): #去停用词和其他词性，比如非名词动词等
+            result += word.encode('utf-8')  # +"/"+str(w.flag)+" "  #去停用词
+            print result
+    return result
+
+# doc = delstopwords('你们觉得天地会的人真心把他当自己人仅仅是因为他滑头？康熙把他当最珍贵的【划去】基【/划去】朋友仅仅是因为他胆子大？')
+# print doc
 if __name__ == '__main__':
 	filesaved = 'article.sql'
 	docpath='./news/'
