@@ -34,7 +34,6 @@ def appd():
     print('All loaded')
 appd()
 
-
 @app.route('/similar/<input_text>',methods=['GET', 'POST'])
 def similar(input_text):
     re=object
