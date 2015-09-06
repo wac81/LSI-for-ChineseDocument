@@ -71,6 +71,8 @@ def similar_search(request):
 
         #取文件真实id，viva
         files = os.listdir('./news/')
+        # print ss[i]
+        # print ss[i][0]
         fileid=files[ss[i][0]]
         fileid=fileid.split('_')
         singleno = fileid[0]

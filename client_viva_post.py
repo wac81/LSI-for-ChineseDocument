@@ -8,19 +8,19 @@ payload = {'text': '韦小宝最看重的不是妹子，不是钱。他想要这
 # payload = {'text': '韦小宝最看重的不是妹子，不是钱。他想要这些，不过是因为他所处的环境里认这些'}
 def test_run():
     # time.sleep(4)
-    r = requests.post("http://115.28.208.173:3000/similar/post",data=payload)
+    r = requests.post("http://115.28.254.33:8088/similar/post",data=payload)
     # r = requests.post("http://192.168.11.128:3000/similar/s",data=payload)
     print r
 
 #单线程顺序测试
-# for index in range(100):
-#     test_run()
+for index in range(1000):
+    test_run()
 
 #多线程并发
-for index in range(100):
-    t=threading.Thread(target=test_run)
-    # t.daemon = True
-    t.start()
+# for index in range(100):
+#     t=threading.Thread(target=test_run)
+#     # t.daemon = True
+#     t.start()
 
 # threads = []
 # for num in range(0, 10):
