@@ -12,6 +12,7 @@ def test_run():
     # r = requests.post("http://192.168.11.128:3000/similar/s",data=payload)
     print r
 
+
 #单线程顺序测试
 for index in range(1000):
     test_run()
