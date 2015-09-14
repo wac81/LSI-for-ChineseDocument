@@ -8,6 +8,7 @@ from collections import defaultdict
 from pprint import pprint
 import sys
 import os
+import re
 
 docpath = './news/'
 # project_path = './'
@@ -16,7 +17,9 @@ dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
 
 def getFile(docpath):
     count = 0
-    for filename in os.listdir(docpath.decode('utf-8')):
+    files = os.listdir(docpath.decode('utf-8'))
+    files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
+    for filename in files:
         count += 1
         print count
         yield codecs.open(docpath + filename).read()

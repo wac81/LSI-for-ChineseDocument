@@ -2,7 +2,7 @@
 
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-
+import re
 import json
 import codecs
 import jieba
@@ -31,6 +31,8 @@ def appd():
     app.config['dictionary'] = corpora.Dictionary.load(project_path + 'lsi/' + 'viva.dict')
     app.config['lsi'] = models.LsiModel.load(project_path + 'lsi/' + 'viva.lsi')
     app.config['index'] = similarities.MatrixSimilarity.load(project_path + 'lsi/' + 'viva.index')
+    files = os.listdir('./news/')
+    app.config['files'] = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
     print('All loaded')
 appd()
 
@@ -66,13 +68,15 @@ def similar_search(request):
     qz = []
     tempqz=[]
     ss=sort_sims[0:10]
+    files = app.config['files']
     for i in range(len(ss)):
         if ss[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
 
         #取文件真实id，viva
-        files = os.listdir('./news/')
+
         # print ss[i]
         # print ss[i][0]
+        print files[299]
         fileid=files[ss[i][0]]
         fileid=fileid.split('_')
         singleno = fileid[0]

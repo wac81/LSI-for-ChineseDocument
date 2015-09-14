@@ -140,6 +140,7 @@ def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4)
     fileSavedPath=fileSavedPath
     rejectOfDocSize=rejectOfDocSize
     list = os.listdir(fileSavedPath)
+    list = sorted(list, key=lambda x: (int(re.sub('\D','',x)),x))
     from multiprocessing import Pool as ThreadPool
     pool = ThreadPool(multiprocess)
     dictionary = pool.map(dealwith_mulitpocess,  list)

@@ -8,20 +8,23 @@ from collections import defaultdict
 from pprint import pprint
 import sys
 import os
+import re
 import urllib2
 from multiprocessing.dummy import Pool as ThreadPool
 
 def getFile(docpath='./a/'):
-    count = 0
-    for filename in os.listdir(docpath.decode('utf-8')):
-        count += 1
-        print count
-        # print codecs.open(docpath + filename, encoding='UTF-8').read()
-        try:
-            yield codecs.open(docpath + filename).read()
-        except:
-            print filename
-            continue
+	count = 0
+	files = os.listdir(docpath.decode('utf-8'))
+	files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
+	for filename in files:
+		count += 1
+		print count
+		# print codecs.open(docpath + filename, encoding='UTF-8').read()
+		try:
+			yield codecs.open(docpath + filename).read()
+		except:
+			print filename
+			continue
 
 # 并行计算
 # def easy_parallize(f, sequence):
