@@ -10,17 +10,17 @@ import sys
 import os
 
 # project_path = './'
-
+lsipath = './nlsi/'
 def getIndex():
 	# 加载语料
-	corpus = corpora.MmCorpus( 'lsi/' + 'viva.mm')
+	corpus = corpora.MmCorpus( lsipath + 'viva.mm')
 	print 'mm loaded'
 
 	# 加载模型
-	lsi = models.LsiModel.load( 'lsi/' + 'viva.lsi')
+	lsi = models.LsiModel.load( lsipath + 'viva.lsi')
 	print 'lsi model loaded'
 
 	# 索引
 	index = similarities.MatrixSimilarity(lsi[corpus])
-	index.save( 'lsi/'  + 'viva.index')
+	index.save( lsipath  + 'viva.index')
 	print('index saved')

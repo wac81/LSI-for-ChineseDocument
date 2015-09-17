@@ -30,8 +30,8 @@ def delstopwords(content):
 # print doc
 if __name__ == '__main__':
 	filesaved = 'article.sql'
-	docpath='./news/'
-	lsipath='./lsi/'
+	docpath='./nnews/'
+	lsipath='./nlsi/'
 	# if os.path.exists(docpath):
 	# 	shutil.rmtree(docpath)  #删除目录
 	# if os.path.exists(lsipath):

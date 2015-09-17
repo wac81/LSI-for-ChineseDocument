@@ -12,7 +12,7 @@ import jieba.posseg as pseg
 # project_path = './'
 
 # jieba.enable_parallel(3)
-fileSavedPath='./news/'
+fileSavedPath='./nnews/'
 rejectOfDocSize=400
 x = 0
 def stripTags(s):
@@ -135,7 +135,7 @@ def delNOTNeedWords(content,stopwords):
 # dictionary = pool.map(writefile,fp)
 # pool.close()
 # pool.join()
-def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4):
+def filebyfileHandle(fileSavedPath='./nnews/',rejectOfDocSize=400,multiprocess=4):
     # mkdir(fileSavedPath)
     # fp = open(fileSavedPath, 'r')
     x = 0
@@ -197,7 +197,7 @@ def dealwith_mulitpocess(file):
 # 第二个参数分割完文件存储目录。
 # 第三个参数最多分割的文件数量，0表示分割完所有文件。
 # 第四个参数表示拒绝文档大小，小于此数值的全都不存储不做处理
-def spiltDocument(spiltfileloc,fileSavedPath='./news/',total=0,rejectOfDocSize=400):
+def spiltDocument(spiltfileloc,fileSavedPath='./nnews/',total=0,rejectOfDocSize=400):
     # print fileSavedPath
     mkdir(fileSavedPath)
     fp = open(spiltfileloc, 'r')

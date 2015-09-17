@@ -10,7 +10,7 @@ import sys
 import os
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-
+lsipath = './nlsi/'
 # articleDir = './a/'
 # project_path = './'
 
@@ -31,10 +31,10 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 #num_topics 定义主题数量，默认300，处理4w以下文件数量，google推荐300-500
 def getLsiModel(num_topics=300):
     # 加载字典
-    dictionary = corpora.Dictionary.load( 'lsi/' + 'viva.dict')
+    dictionary = corpora.Dictionary.load( lsipath + 'viva.dict')
     print '字典加载完毕'
     # 语料库
-    corpus = corpora.MmCorpus('lsi/viva.mm')
+    corpus = corpora.MmCorpus(lsipath +'viva.mm')
     print ('mm load')
     # tfidf
     tfidf = models.TfidfModel(corpus)
@@ -44,6 +44,6 @@ def getLsiModel(num_topics=300):
     # lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=500,power_iters=2,chunksize=50000,onepass=True,distributed=False)
     lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=num_topics,chunksize=20000)
 
-    lsi.save( 'lsi/'  + 'viva.lsi')
+    lsi.save( lsipath  + 'viva.lsi')
     print('lsi模型保存完毕')
     return  lsi

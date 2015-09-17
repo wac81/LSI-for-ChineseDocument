@@ -10,10 +10,11 @@ import sys
 import os
 import re
 
-docpath = './news/'
+docpath = './nnews/'
+lsipath = './nlsi/'
 # project_path = './'
 # dictionary=None
-dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
+dictionary=corpora.Dictionary.load(lsipath + 'viva.dict')
 
 def getFile(docpath):
     count = 0
@@ -53,14 +54,14 @@ def getFile(docpath):
 
 
 # 语料库 docpath 为文件存储位置
-def getCorpus(docpath='./news/'):
+def getCorpus(docpath='./nnews/'):
     # 加载字典
     # dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
     # dictionary = dict
     print 'Dict loaded'
     docpath=docpath
     corpus = MyCorpus()
-    corpora.MmCorpus.serialize('./lsi/' + 'viva.mm', corpus)
+    corpora.MmCorpus.serialize(lsipath + 'viva.mm', corpus)
     print('Corpus Saved')
     return  corpus
 
