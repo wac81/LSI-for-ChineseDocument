@@ -11,22 +11,22 @@ payload = {'text':payload}
 
 def test_run():
     # time.sleep(4)
-    for index in range(1):
-        # r = requests.post("http://115.28.254.33:8088/similar/post",data=payload)
-        r = requests.post("http://127.0.0.1:3000/similar/post",data=payload)
+    for index in range(10):
+        r = requests.post("http://115.28.254.33:8088/similar/post",data=payload)
+        # r = requests.post("http://127.0.0.1:3000/similar/post",data=payload)
         print r
     # r = requests.post("http://192.168.11.128:3000/similar/s",data=payload)
 
 
 #单线程顺序测试
-for index in range(1):
-    test_run()
+# for index in range(1):
+#     test_run()
 
 #多线程并发
-# for index in range(4):
-#     t=threading.Thread(target=test_run)
-#     # t.daemon = True
-#     t.start()
+for index in range(4):
+    t=threading.Thread(target=test_run)
+    # t.daemon = True
+    t.start()
 
 # threads = []
 # for num in range(0, 10):

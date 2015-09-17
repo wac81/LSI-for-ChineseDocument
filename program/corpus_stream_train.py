@@ -17,12 +17,13 @@ dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
 
 def getFile(docpath):
     count = 0
-    files = os.listdir(docpath.decode('utf-8'))
+    files = os.listdir(docpath)
     files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
     for filename in files:
         count += 1
         print count
         yield codecs.open(docpath + filename).read()
+        print filename
 
 
 

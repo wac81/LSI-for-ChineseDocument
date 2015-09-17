@@ -57,6 +57,8 @@ def index():
 
 def similar_search(request):
     doc = request
+    doc = doc.replace(r'\n', '').replace(r'▉', '').replace(r'\t', '').replace(' ', '')
+    doc = stripTags(doc)
     doc = delstopwords(doc)
     vec_bow = app.config['dictionary'].doc2bow(jieba.lcut(doc))
     vec_lsi = app.config['lsi'][vec_bow]
@@ -68,15 +70,17 @@ def similar_search(request):
     qz = []
     tempqz=[]
     ss=sort_sims[0:10]
+    # files = os.listdir('./news/')
+    # files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
     files = app.config['files']
     for i in range(len(ss)):
-        if ss[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
+        #if ss[i][1]>=0.99:continue  #将1：0.99相似度的文件剔除
 
         #取文件真实id，viva
 
         # print ss[i]
         # print ss[i][0]
-        print files[299]
+        # print files[299]
         fileid=files[ss[i][0]]
         fileid=fileid.split('_')
         singleno = fileid[0]
@@ -116,6 +120,23 @@ def delstopwords(content):
     #             print result
     return result
 
+
+def stripTags(s):
+    ''' Strips HTML tags.
+        Taken from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/440481
+    '''
+    intag = [False]
+
+    def chk(c):
+        if intag[0]:
+            intag[0] = (c != '>')
+            return False
+        elif c == '<':
+            intag[0] = True
+            return False
+        return True
+
+    return ''.join(c for c in s if chk(c))
 
 
 if __name__ == '__main__':

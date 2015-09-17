@@ -6,6 +6,8 @@ import re
 import jieba
 import codecs
 import jieba.posseg as pseg
+# import sys
+# sys.path.append("../../LSI-for-ChineseDocument")
 # clear all html tags
 # project_path = './'
 
@@ -181,11 +183,14 @@ def dealwith_mulitpocess(file):
         content = stripTags(content)
         content = delNOTNeedWords(content,stopwords)
         if len(content) > rejectOfDocSize:
-            fp.write(stripTags(content))
+            fp.truncate(0)
+            position = fp.seek(0, 0);
+            fp.write(content)
             fp.close()
             # x = x + 1
             print filepath
 
+# filebyfileHandle('../news',100,1)
 # p = re.compile('\s+')
 
 # 第一个参数需要分割的文件位置。
