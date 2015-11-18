@@ -135,6 +135,18 @@ def delNOTNeedWords(content,stopwords):
 # dictionary = pool.map(writefile,fp)
 # pool.close()
 # pool.join()
+def filebyfileHandleSingleProcess(SavedPath='./nnews/',rejectOfDocSize=400):
+    # mkdir(fileSavedPath)
+    # fp = open(fileSavedPath, 'r')
+    x = 0
+    global fileSavedPath
+    fileSavedPath=SavedPath
+    list = os.listdir(fileSavedPath)
+    list = sorted(list, key=lambda x: (int(re.sub('\D','',x)),x))
+    for l in list:
+        dealwith_mulitpocess(l)
+
+
 def filebyfileHandle(fileSavedPath='./nnews/',rejectOfDocSize=400,multiprocess=4):
     # mkdir(fileSavedPath)
     # fp = open(fileSavedPath, 'r')
