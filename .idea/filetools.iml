@@ -10,7 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/news" />
       <excludeFolder url="file://$MODULE_DIR$/news——" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 2.7.10 (/usr/bin/python)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

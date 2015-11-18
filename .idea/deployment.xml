@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="viva">
+  <component name="PublishConfigData" serverName="211.155.92.85">
     <serverData>
-      <paths name="viva">
+      <paths name="211.155.92.85">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
