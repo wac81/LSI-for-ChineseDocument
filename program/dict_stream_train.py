@@ -12,8 +12,8 @@ import re
 import urllib2
 from multiprocessing.dummy import Pool as ThreadPool
 
-lsipath = './nlsi/'
-def getFile(docpath='./nnews/'):
+lsipath = './lsi/'
+def getFile(docpath='./news/'):
 	count = 0
 	files = os.listdir(docpath)
 	files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
@@ -65,7 +65,7 @@ def getFile(docpath='./nnews/'):
 #     return jieba.lcut(x)
 
 # dictionary= parallel_attribute(some_function)
-def getDictionary(docpath='./nnews/'):
+def getDictionary(docpath='./news/'):
 	stopwords = codecs.open('stopwords.txt', encoding='UTF-8').read()
 	stopwordSet = set(stopwords.split('\r\n'))
 	print('All' + str(len(stopwordSet)) + 'stopwords')
@@ -114,15 +114,15 @@ def getDictionary(docpath='./nnews/'):
 
 
 def mkdir(path):
-    # 引入模块
+	# 引入模块
     import os
 
-    # 去除首位空格
+	# 去除首位空格
     path = path.strip()
-    # 去除尾部 \ 符号
+	# 去除尾部 \ 符号
     path = path.rstrip("\\")
 
-    # 判断路径是否存在
+	# 判断路径是否存在
     # 存在     True
     # 不存在   False
     isExists = os.path.exists(path)

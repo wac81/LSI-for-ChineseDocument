@@ -50,6 +50,20 @@ def similar(input_text):
     print result
     return result
 
+@app.route('/receive/<input_text>',methods=['GET', 'POST'])
+def similar(input_text):
+    re=object
+    if request.method == 'POST':
+        re = request.form['text']
+    else:
+        try:
+            re = input_text  # 获取GET参数，没有参数就赋值 0
+        except ValueError:
+            abort(404)      # 返回 404
+    result = json.dumps(similar_search(re))
+    print result
+    return result
+
 
 @app.route('/')
 def index():
@@ -70,6 +84,7 @@ def similar_search(request):
     qz = []
     tempqz=[]
     ss=sort_sims[0:10]
+    print len(ss)
     # files = os.listdir('./news/')
     # files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
     files = app.config['files']

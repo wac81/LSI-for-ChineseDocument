@@ -4,13 +4,14 @@
 import codecs
 import jieba
 from gensim import corpora, models, similarities
+from gensim.models import lsimodel
 from collections import defaultdict
 from pprint import pprint
 import sys
 import os
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-lsipath = './nlsi/'
+lsipath = './lsi/'
 # articleDir = './a/'
 # project_path = './'
 
@@ -42,7 +43,7 @@ def getLsiModel(num_topics=300):
 
     # corpus = MyCorpus()
     # lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=500,power_iters=2,chunksize=50000,onepass=True,distributed=False)
-    lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=num_topics,chunksize=20000)
+    lsi = lsimodel.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=num_topics,chunksize=20000)
 
     lsi.save( lsipath  + 'viva.lsi')
     print('lsi模型保存完毕')

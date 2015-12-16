@@ -9,12 +9,27 @@ from pprint import pprint
 import sys
 import os
 import re
+import cPickle
 
-docpath = './nnews/'
-lsipath = './nlsi/'
+docpath = './news/'
+lsipath = './lsi/'
 # project_path = './'
 # dictionary=None
-dictionary=corpora.Dictionary.load(lsipath + 'viva.dict')
+dictionary=corpora.Dictionary.load(lsipath + "viva.dict")
+
+def getFiles(docpath):
+    count = 0
+    files = os.listdir(docpath)
+    files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
+    arr = []
+
+    for filename in files:
+        count += 1
+        print count
+        arr.append(jieba.lcut(codecs.open(os.path.join(docpath ,filename)).read()))
+        print filename
+
+    return arr
 
 def getFile(docpath):
     count = 0
@@ -23,7 +38,11 @@ def getFile(docpath):
     for filename in files:
         count += 1
         print count
-        yield codecs.open(docpath + filename).read()
+        try:
+            yield codecs.open(docpath + filename).read()
+        except:
+            print(docpath)
+            continue
         print filename
 
 
@@ -54,20 +73,23 @@ def getFile(docpath):
 
 
 # 语料库 docpath 为文件存储位置
-def getCorpus(docpath='./nnews/'):
+def getCorpus(docpath='./news/'):
     # 加载字典
     # dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
     # dictionary = dict
     print 'Dict loaded'
-    docpath=docpath
+    docpath = docpath
     corpus = MyCorpus()
     corpora.MmCorpus.serialize(lsipath + 'viva.mm', corpus)
+    corpus_list = [dictionary.doc2bow(jieba.lcut(file)) for file in getFile(docpath)]
+    fp = open(lsipath + "viva_cor_list.list", 'w')
+    cPickle.dump(corpus_list, fp)
     print('Corpus Saved')
     return  corpus
 
 
 class MyCorpus(object):
     def __iter__(self):
-		# dictionary = pool.map(dictionary.doc2bow,  getFile())
+        # dictionary = pool.map(dictionary.doc2bow,  getFile())
         for file in getFile(docpath):
-            yield dictionary.doc2bow(jieba.lcut(file))
+            yield dictionary.doc2bow(document=jieba.lcut(file))

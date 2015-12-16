@@ -154,6 +154,8 @@ for item in receiver.listen():
 
             sr=pn.single_review_sentiment_score(reqParamList[1].decode('utf8'))
             print sr
+            if len(sr) <= 0 :
+                continue
             pos=sr[2]
             neg=sr[3]
             if (pos==0 and neg ==0):pos=0.5

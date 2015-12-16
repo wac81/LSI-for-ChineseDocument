@@ -85,7 +85,7 @@ def sumup_sentence_sentiment_score(score_list):
 def single_review_sentiment_score(review):
 	single_review_senti_score = []
 	cuted_review = tp.cut_sentence_2(review)
-
+	review_sentiment_score = []
 	for sent in cuted_review:
 		seg_sent = tp.segmentation(sent, 'list')
 		i = 0 # word position counter

@@ -1,4 +1,4 @@
-# coding=utf8
+# -*- coding:utf-8 -*-
 
 
 import os
@@ -12,7 +12,7 @@ import jieba.posseg as pseg
 # project_path = './'
 
 # jieba.enable_parallel(3)
-fileSavedPath='./nnews/'
+fileSavedPath='./news/'
 rejectOfDocSize=400
 x = 0
 def stripTags(s):
@@ -135,7 +135,7 @@ def delNOTNeedWords(content,stopwords):
 # dictionary = pool.map(writefile,fp)
 # pool.close()
 # pool.join()
-def filebyfileHandleSingleProcess(SavedPath='./nnews/',rejectOfDocSize=400):
+def filebyfileHandleSingleProcess(SavedPath='./news/',rejectOfDocSize=400):
     # mkdir(fileSavedPath)
     # fp = open(fileSavedPath, 'r')
     x = 0
@@ -147,14 +147,16 @@ def filebyfileHandleSingleProcess(SavedPath='./nnews/',rejectOfDocSize=400):
         dealwith_mulitpocess(l)
 
 
-def filebyfileHandle(fileSavedPath='./nnews/',rejectOfDocSize=400,multiprocess=4):
+def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4,number_doc=-1):
     # mkdir(fileSavedPath)
     # fp = open(fileSavedPath, 'r')
     x = 0
     fileSavedPath=fileSavedPath
     rejectOfDocSize=rejectOfDocSize
     list = os.listdir(fileSavedPath)
-    list = sorted(list, key=lambda x: (int(re.sub('\D','',x)),x))
+    if(number_doc==-1 or number_doc > len(list)):
+        number_doc = len(list)
+    list = sorted(list[:number_doc], key=lambda x: (int(re.sub('\D','',x)),x))
     from multiprocessing import Pool as ThreadPool
     pool = ThreadPool(multiprocess)
     dictionary = pool.map(dealwith_mulitpocess,  list)
@@ -184,7 +186,12 @@ def filebyfileHandle(fileSavedPath='./nnews/',rejectOfDocSize=400,multiprocess=4
 def dealwith_mulitpocess(file):
     filepath = os.path.join(fileSavedPath,file)
     if not os.path.isdir(filepath):
-        fp = open(filepath, 'r+')
+        # codecs.open('stopwords.txt', encoding='UTF-8').read()
+        try:
+            fp = open(filepath, 'r+')
+        except:
+            print("error"+filepath)
+            return
         content=''
 
         for line in fp:
@@ -209,7 +216,7 @@ def dealwith_mulitpocess(file):
 # 第二个参数分割完文件存储目录。
 # 第三个参数最多分割的文件数量，0表示分割完所有文件。
 # 第四个参数表示拒绝文档大小，小于此数值的全都不存储不做处理
-def spiltDocument(spiltfileloc,fileSavedPath='./nnews/',total=0,rejectOfDocSize=400):
+def spiltDocument(spiltfileloc,fileSavedPath='./news/',total=0,rejectOfDocSize=400):
     # print fileSavedPath
     mkdir(fileSavedPath)
     fp = open(spiltfileloc, 'r')

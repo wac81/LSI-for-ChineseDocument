@@ -2,8 +2,8 @@
 import os
 import sys
 # import shutil
-import time
 sys.path.append("./program/")
+import time
 # def f(x):
     # return corpora.Dictionary(jieba.lcut('我们可以'))
 time_before = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
@@ -11,7 +11,9 @@ print time_before
 
 import jieba.posseg as pseg
 import codecs
-stopwords = codecs.open('stopwords.txt', encoding='UTF-8').read()
+# from program import *
+stopwords = codecs.open('./program/stopwords.txt', encoding='UTF-8').read()
+
 def delstopwords(content):
     # words = jieba.lcut(content)
     result=''
@@ -30,29 +32,45 @@ def delstopwords(content):
 # print doc
 if __name__ == '__main__':
 	filesaved = 'article.sql'
-	docpath='./nnews/'
-	lsipath='./nlsi/'
+	docpath='./news/'
+	lsipath='./lsi/'
+	NUM_TOPIC = 300		# 主题的数量，默认为 300
+	NUM_DOC = -1		# 所选取的语料集中的文件数量
+
 	# if os.path.exists(docpath):
-	# 	shutil.rmtree(docpath)  #删除目录
+	# 	shutil.rmtree(docpath)  # 删除目录
 	# if os.path.exists(lsipath):
-	# 	shutil.rmtree(lsipath)  #删除目录
+	# 	shutil.rmtree(lsipath)  # 删除目录
 
 	if  os.path.exists(docpath):
 		from ar import filebyfileHandle
-		filebyfileHandle(docpath,100,4)   #100字符内的文件抛掉不处理,多进程默认 multiprocess=4
+		filebyfileHandle(docpath,100,4,NUM_DOC)   #100字符内的文件抛掉不处理,多进程默认 multiprocess=4
 
+	t11 = time.time()
 	from dict_stream_train import getDictionary
-	dict=getDictionary()
+	dict = getDictionary(docpath=docpath)
+	t12 = time.time()
 
+	t21 = time.time()
 	from corpus_stream_train import getCorpus
-	corpus=getCorpus()
+	corpus = getCorpus(docpath=docpath)
+	t22 = time.time()
 
+	t31 = time.time()
 	from lsi_stream_train import getLsiModel
-	lsimodel=getLsiModel()
+	lsimodel = getLsiModel(NUM_TOPIC)
+	t32 = time.time()
 
+	t41 = time.time()
 	from index_stream_train import getIndex
-	getIndex()
-    # p = Pool(5)
+	getIndex(lsipath)
+	t42 = time.time()
+
+	print "dict time = ", t12-t11
+	print "corpus time = ", t22-t21
+	print "lsimodel time = ", t32-t31
+	print "getIndex time = ", t42-t41
+	# p = Pool(5)
     # d = corpora.Dictionary(jieba.cut('我们可以'))
     # print d
     # print( corpora.Dictionary(jieba.lcut('我们可以')))

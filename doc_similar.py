@@ -1,13 +1,14 @@
 #coding:utf-8
 
-from gensim import corpora, models, similarities
+from gensim import corpora, models, similarities, matutils
 import cPickle
 import logging
 import utils
 import os
+import sys
 import numpy as np
 import scipy
-import matutils
+# import matutils
 from collections import defaultdict
 
 data_dir = os.path.join(os.getcwd(), 'data')
