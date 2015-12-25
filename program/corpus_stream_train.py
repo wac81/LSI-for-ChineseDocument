@@ -12,11 +12,11 @@ import re
 import sys
 import cPickle
 
-docpath = './news/'
-lsipath = './lsi/'
+# docpath = './news/'
+# lsipath = './lsi/'
 # project_path = './'
 # dictionary=None
-dictionary=corpora.Dictionary.load(lsipath + "viva.dict")
+# dictionary=corpora.Dictionary.load(lsipath + "viva.dict")
 
 def getFiles(docpath):
     count = 0
@@ -77,18 +77,20 @@ def getFile(docpath):
 # 语料库 docpath 为文件存储位置
 def getCorpus(lsipath='./lsi/', docpath='./news/'):
     # 加载字典
-    # dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
+    dictionary=corpora.Dictionary.load(lsipath + 'viva.dict')
     # dictionary = dict
     print 'Dict loaded'
-    docpath = docpath
-    corpus = MyCorpus()
+    corpus = MyCorpus(dictionary, docpath)
     corpora.MmCorpus.serialize(lsipath + 'viva.mm', corpus)
     print('Corpus Saved')
     return  corpus
 
 
 class MyCorpus(object):
+    def __init__(self, dictionary, docpath):
+        self.dictionary = dictionary
+        self.docpath = docpath
     def __iter__(self):
         # dictionary = pool.map(dictionary.doc2bow,  getFile())
-        for file in getFile(docpath):
-            yield dictionary.doc2bow(document=jieba.lcut(file))
+        for tfile in getFile(self.docpath):
+            yield self.dictionary.doc2bow(document=jieba.lcut(tfile))

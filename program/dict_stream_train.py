@@ -12,7 +12,7 @@ import re
 import urllib2
 from multiprocessing.dummy import Pool as ThreadPool
 
-lsipath = './lsi/'
+# lsipath = './lsi/'
 def getFile(docpath='./news/'):
 	count = 0
 	files = os.listdir(docpath)

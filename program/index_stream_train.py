@@ -11,7 +11,7 @@ import os
 
 # project_path = './'
 # lsipath = './lsi/'
-def getIndex(lsipath, NUM_TOPIC):
+def getIndex(lsipath='./lsi/', NUM_TOPIC=300):
 	# 加载语料
 	corpus = corpora.MmCorpus( lsipath + 'viva.mm')
 	print 'mm loaded'
