@@ -32,8 +32,9 @@ def delstopwords(content):
 # print doc
 if __name__ == '__main__':
 	filesaved = 'article.sql'
-	docpath='./news/'
-	lsipath='./lsi/'
+	docpath='./nnews/'
+
+	lsipath='./nlsi/'
 	NUM_TOPIC = 300		# 主题的数量，默认为 300
 	NUM_DOC = -1		# 所选取的语料集中的文件数量
 
