@@ -32,8 +32,6 @@ def delstopwords(content):
 # print doc
 if __name__ == '__main__':
 	filesaved = 'article.sql'
-	# docpath='./nnews/'
-	# lsipath='./nlsi/'
 	docpath='./news/'
 	lsipath='./lsi/'
 	NUM_TOPIC = 300		# 主题的数量，默认为 300
@@ -51,17 +49,17 @@ if __name__ == '__main__':
 
 	t11 = time.time()
 	from dict_stream_train import getDictionary
-	dict = getDictionary(docpath=docpath)
+	dict = getDictionary(lsipath=lsipath, docpath=docpath)
 	t12 = time.time()
 
 	t21 = time.time()
 	from corpus_stream_train import getCorpus
-	corpus = getCorpus(docpath=docpath)
+	corpus = getCorpus(lsipath=lsipath, docpath=docpath)
 	t22 = time.time()
 
 	t31 = time.time()
 	from lsi_stream_train import getLsiModel
-	lsimodel = getLsiModel(NUM_TOPIC)
+	lsimodel = getLsiModel(lsipath=lsipath, num_topics=NUM_TOPIC)
 	t32 = time.time()
 
 	t41 = time.time()
