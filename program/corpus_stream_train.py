@@ -20,31 +20,32 @@ dictionary=corpora.Dictionary.load(lsipath + "viva.dict")
 def getFiles(docpath):
     count = 0
     files = os.listdir(docpath)
-    files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
+    files = sorted(files, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
     arr = []
 
     for filename in files:
         count += 1
         print count
-        arr.append(jieba.lcut(codecs.open(os.path.join(docpath ,filename)).read()))
-        print filename
-
+        try:
+            arr.append(jieba.lcut(codecs.open(os.path.join(docpath ,filename)).read()))
+            print filename
+        except Exception as e:
+            print e
     return arr
 
 def getFile(docpath):
     count = 0
     files = os.listdir(docpath)
-    files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
+
+    files = sorted(files, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
     for filename in files:
         count += 1
         print count
         try:
             yield codecs.open(docpath + filename).read()
-        except:
-            print(docpath)
-            continue
-        print filename
-
+            print filename
+        except Exception as e:
+            print e
 
 
 
@@ -81,9 +82,6 @@ def getCorpus(docpath='./news/'):
     docpath = docpath
     corpus = MyCorpus()
     corpora.MmCorpus.serialize(lsipath + 'viva.mm', corpus)
-    corpus_list = [dictionary.doc2bow(jieba.lcut(file)) for file in getFile(docpath)]
-    fp = open(lsipath + "viva_cor_list.list", 'w')
-    cPickle.dump(corpus_list, fp)
     print('Corpus Saved')
     return  corpus
 

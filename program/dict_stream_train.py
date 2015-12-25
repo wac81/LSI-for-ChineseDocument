@@ -16,7 +16,7 @@ lsipath = './lsi/'
 def getFile(docpath='./news/'):
 	count = 0
 	files = os.listdir(docpath)
-	files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
+	files = sorted(files, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
 	for filename in files:
 		count += 1
 		print count

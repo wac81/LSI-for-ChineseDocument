@@ -29,28 +29,18 @@ docpath='/home/workspace/news'
 def appd():
     app.config['stopwords'] = codecs.open(project_path + 'stopwords.txt', encoding='UTF-8').read()
     app.config['dictionary'] = corpora.Dictionary.load(project_path + 'lsi/' + 'viva.dict')
-    app.config['lsi'] = models.LsiModel.load(project_path + 'lsi/' + 'viva.lsi')
-    app.config['index'] = similarities.MatrixSimilarity.load(project_path + 'lsi/' + 'viva.index')
+    # baobao changed 4 lines
+    # app.config['lsi'] = models.LsiModel.load(project_path + 'lsi/' + 'viva.lsi')
+    app.config['lsi'] = models.lsimodel.LsiModel.load(project_path + 'lsi/' + 'viva.lsi')
+    # app.config['index'] = similarities.MatrixSimilarity.load(project_path + 'lsi/' + 'viva.index')
+    app.config['index'] = similarities.docsim.Similarity.load(project_path + 'lsi/' + 'viva.index')
     files = os.listdir('./news/')
-    app.config['files'] = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
+    app.config['files'] = sorted(files, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
+    # app.config['files'] = files
     print('All loaded')
 appd()
 
 @app.route('/similar/<input_text>',methods=['GET', 'POST'])
-def similar(input_text):
-    re=object
-    if request.method == 'POST':
-        re = request.form['text']
-    else:
-        try:
-            re = input_text  # 获取GET参数，没有参数就赋值 0
-        except ValueError:
-            abort(404)      # 返回 404
-    result = json.dumps(similar_search(re))
-    print result
-    return result
-
-@app.route('/receive/<input_text>',methods=['GET', 'POST'])
 def similar(input_text):
     re=object
     if request.method == 'POST':
@@ -69,6 +59,25 @@ def similar(input_text):
 def index():
     return '相似度推荐 for viva，GET方式：请访问/similar/[传入字串] \n POST方式：请访问/similar/post  post体里text=[传入字串]'
 
+# baobao add whole function
+@app.route('/getfiles/<input_text>',methods=['GET', 'POST'])
+def getfiles(input_text):
+    re=object
+    if request.method == 'POST':
+        files = request.form['files']
+        # name = request.form['name']
+    else:
+        try:
+            re = input_text  # 获取GET参数，没有参数就赋值 0
+        except ValueError:
+            abort(404)      # 返回 404
+    result = json.loads(files)
+    if len(result)!=0:
+        from similarity_update import sim_update
+        sim_update(result)
+    print result
+    return result
+
 def similar_search(request):
     doc = request
     doc = doc.replace(r'\n', '').replace(r'▉', '').replace(r'\t', '').replace(' ', '')
@@ -76,14 +85,20 @@ def similar_search(request):
     doc = delstopwords(doc)
     vec_bow = app.config['dictionary'].doc2bow(jieba.lcut(doc))
     vec_lsi = app.config['lsi'][vec_bow]
-    sims = app.config['index'][vec_lsi]
+
+    # baobao changed
+    index = app.config['index']
+    index.num_best = 10 # baobao
+    sims = index[vec_lsi]
+    sort_sims = sims    # baobao
     # print sims
-    sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
+    # sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])    # baobao comment
     # sorted(word_similarities.items(), key=lambda x: x[1],reverse=True)
+
     no = []
     qz = []
     tempqz=[]
-    ss=sort_sims[0:10]
+    ss = sort_sims[0:10]
     print len(ss)
     # files = os.listdir('./news/')
     # files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))

@@ -3,11 +3,18 @@
 import requests
 import threading
 import codecs
-
+import json
 # t = codecs.open('post.txt').read();
 # payload = {'text': '韦小宝最看重的不是妹子，不是钱。他想要这些，不过是因为他所处的环境里认这些，所以他也要。就如同你我身边不少人豁出命去考个什么公务员，怎么，他们的理想是当公务员？真有多热爱这个职业？当他遇到生命危险时，钱是可以扔的，妹子是可以不要的。七个老婆，你觉得他真心喜欢过谁？他追妹子的方式，全是把她们当战利品，这和他的妓院出身有关系，和金庸笔下其他男性半点不像。他见着漂亮的就要，越多越好，因为他打小就觉得这是成功的标志。'}
 payload = codecs.open('post.txt').read()
 payload = {'text':payload}
+
+payloadfiles = codecs.open('5093992323423423_postfile.txt').read()
+temp =  json.dumps([{'name':'5093992323423423_postfile','text':payloadfiles},{'name':'5093992323423423_postfile','text':payloadfiles}])
+payloadfiles = {'files':temp}
+
+r = requests.post("http://127.0.0.1:3000/getfiles/post",data=payloadfiles)
+print r
 
 def test_run():
     # time.sleep(4)

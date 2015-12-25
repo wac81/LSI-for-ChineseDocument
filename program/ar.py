@@ -142,7 +142,7 @@ def filebyfileHandleSingleProcess(SavedPath='./news/',rejectOfDocSize=400):
     global fileSavedPath
     fileSavedPath=SavedPath
     list = os.listdir(fileSavedPath)
-    list = sorted(list, key=lambda x: (int(re.sub('\D','',x)),x))
+    list = sorted(list, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
     for l in list:
         dealwith_mulitpocess(l)
 
@@ -156,7 +156,8 @@ def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4,
     list = os.listdir(fileSavedPath)
     if(number_doc==-1 or number_doc > len(list)):
         number_doc = len(list)
-    list = sorted(list[:number_doc], key=lambda x: (int(re.sub('\D','',x)),x))
+    list = sorted(list[:number_doc], key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
+    # list = sorted(list[:number_doc], key=lambda x: (int(re.sub('\D','',x)),x))
     from multiprocessing import Pool as ThreadPool
     pool = ThreadPool(multiprocess)
     dictionary = pool.map(dealwith_mulitpocess,  list)

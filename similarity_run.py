@@ -32,6 +32,8 @@ def delstopwords(content):
 # print doc
 if __name__ == '__main__':
 	filesaved = 'article.sql'
+	# docpath='./nnews/'
+	# lsipath='./nlsi/'
 	docpath='./news/'
 	lsipath='./lsi/'
 	NUM_TOPIC = 300		# 主题的数量，默认为 300
@@ -41,10 +43,11 @@ if __name__ == '__main__':
 	# 	shutil.rmtree(docpath)  # 删除目录
 	# if os.path.exists(lsipath):
 	# 	shutil.rmtree(lsipath)  # 删除目录
-
+	t01 = time.time()
 	if  os.path.exists(docpath):
 		from ar import filebyfileHandle
 		filebyfileHandle(docpath,100,4,NUM_DOC)   #100字符内的文件抛掉不处理,多进程默认 multiprocess=4
+	t02 = time.time()
 
 	t11 = time.time()
 	from dict_stream_train import getDictionary
@@ -63,9 +66,10 @@ if __name__ == '__main__':
 
 	t41 = time.time()
 	from index_stream_train import getIndex
-	getIndex(lsipath)
+	getIndex(lsipath, NUM_TOPIC)	#change by baobao ,add NUM_TOPIC
 	t42 = time.time()
 
+	print "prepare time = ", t02-t01
 	print "dict time = ", t12-t11
 	print "corpus time = ", t22-t21
 	print "lsimodel time = ", t32-t31

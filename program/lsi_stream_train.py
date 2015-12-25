@@ -4,7 +4,7 @@
 import codecs
 import jieba
 from gensim import corpora, models, similarities
-from gensim.models import lsimodel
+from gensim.models import lsimodel, LsiModel
 from collections import defaultdict
 from pprint import pprint
 import sys
@@ -41,6 +41,7 @@ def getLsiModel(num_topics=300):
     tfidf = models.TfidfModel(corpus)
     corpus_tfidf = tfidf[corpus]
 
+    # baobao change 3 lines
     # corpus = MyCorpus()
     # lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=500,power_iters=2,chunksize=50000,onepass=True,distributed=False)
     lsi = lsimodel.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=num_topics,chunksize=20000)

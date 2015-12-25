@@ -11,16 +11,22 @@ import os
 
 # project_path = './'
 # lsipath = './lsi/'
-def getIndex(lsipath):
+def getIndex(lsipath, NUM_TOPIC):
 	# 加载语料
 	corpus = corpora.MmCorpus( lsipath + 'viva.mm')
 	print 'mm loaded'
 
 	# 加载模型
-	lsi = models.LsiModel.load( lsipath + 'viva.lsi')
+	# lsi = models.LsiModel.load( lsipath + 'viva.lsi')
+	# baobao change 1 line
+	lsi = models.lsimodel.LsiModel.load( lsipath + 'viva.lsi')
 	print 'lsi model loaded'
 
 	# 索引
-	index = similarities.MatrixSimilarity(lsi[corpus])
-	index.save( lsipath  + 'viva.index')
+	# index = similarities.MatrixSimilarity(lsi[corpus])
+	# index.save( lsipath  + 'viva.index')
+
+	# baobao changed 1 line
+	index = similarities.docsim.Similarity(lsipath  + 'viva.index', lsi[corpus], num_features=NUM_TOPIC)
+	index.save(lsipath  + 'viva.index')
 	print('index saved')
