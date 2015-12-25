@@ -110,7 +110,9 @@ def sim_update(results):
     print "Total elapsed time is: ", t2-t_total_begin, "s"
 
     # Shell
+    print("Run the shell.")
     os.system('./after_update.sh')
+    print("Shell done!")
 
 if __name__=='__main__':
     result = [

@@ -16,7 +16,7 @@ lsipath = './lsi/'
 def getFile(docpath='./news/'):
 	count = 0
 	files = os.listdir(docpath)
-	files = sorted(files, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
+	files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
 	for filename in files:
 		count += 1
 		print count
@@ -65,7 +65,7 @@ def getFile(docpath='./news/'):
 #     return jieba.lcut(x)
 
 # dictionary= parallel_attribute(some_function)
-def getDictionary(docpath='./news/'):
+def getDictionary(lsipath='./lsi/', docpath='./news/'):
 	stopwords = codecs.open('stopwords.txt', encoding='UTF-8').read()
 	stopwordSet = set(stopwords.split('\r\n'))
 	print('All' + str(len(stopwordSet)) + 'stopwords')

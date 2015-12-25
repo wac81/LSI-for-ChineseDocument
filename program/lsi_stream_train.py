@@ -30,7 +30,7 @@ lsipath = './lsi/'
 #             yield dictionary.doc2bow(jieba.lcut(file))
 
 #num_topics 定义主题数量，默认300，处理4w以下文件数量，google推荐300-500
-def getLsiModel(num_topics=300):
+def getLsiModel(lsipath='./lsi/', num_topics=300):
     # 加载字典
     dictionary = corpora.Dictionary.load( lsipath + 'viva.dict')
     print '字典加载完毕'

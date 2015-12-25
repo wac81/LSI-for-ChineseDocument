@@ -9,6 +9,7 @@ from pprint import pprint
 import sys
 import os
 import re
+import sys
 import cPickle
 
 docpath = './news/'
@@ -20,7 +21,7 @@ dictionary=corpora.Dictionary.load(lsipath + "viva.dict")
 def getFiles(docpath):
     count = 0
     files = os.listdir(docpath)
-    files = sorted(files, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
+    files = sorted(files, key=lambda x: (int(re.sub('\D','',x)),x))
     arr = []
 
     for filename in files:
@@ -74,7 +75,7 @@ def getFile(docpath):
 
 
 # 语料库 docpath 为文件存储位置
-def getCorpus(docpath='./news/'):
+def getCorpus(lsipath='./lsi/', docpath='./news/'):
     # 加载字典
     # dictionary=corpora.Dictionary.load('lsi/' + 'viva.dict')
     # dictionary = dict

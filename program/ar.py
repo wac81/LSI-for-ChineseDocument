@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+# coding=utf8
 
 
 import os
@@ -142,7 +142,7 @@ def filebyfileHandleSingleProcess(SavedPath='./news/',rejectOfDocSize=400):
     global fileSavedPath
     fileSavedPath=SavedPath
     list = os.listdir(fileSavedPath)
-    list = sorted(list, key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
+    list = sorted(list, key=lambda x: (int(re.sub('\D','',x)),x))
     for l in list:
         dealwith_mulitpocess(l)
 
@@ -154,13 +154,17 @@ def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4,
     fileSavedPath=fileSavedPath
     rejectOfDocSize=rejectOfDocSize
     list = os.listdir(fileSavedPath)
+
     if(number_doc==-1 or number_doc > len(list)):
         number_doc = len(list)
-    list = sorted(list[:number_doc], key=lambda x: (int(re.search(r'([0-9]+)(_)', x).group(1)),x))
-    # list = sorted(list[:number_doc], key=lambda x: (int(re.sub('\D','',x)),x))
+    list = sorted(list[:number_doc], key=lambda x: (int(re.sub('\D','',x)),x))
     from multiprocessing import Pool as ThreadPool
     pool = ThreadPool(multiprocess)
-    dictionary = pool.map(dealwith_mulitpocess,  list)
+    try:
+        dictionary = pool.map(dealwith_mulitpocess,  list)
+    except Exception as e:
+        print e
+        pass
     pool.close()
     pool.join()
 
@@ -187,12 +191,7 @@ def filebyfileHandle(fileSavedPath='./news/',rejectOfDocSize=400,multiprocess=4,
 def dealwith_mulitpocess(file):
     filepath = os.path.join(fileSavedPath,file)
     if not os.path.isdir(filepath):
-        # codecs.open('stopwords.txt', encoding='UTF-8').read()
-        try:
-            fp = open(filepath, 'r+')
-        except:
-            print("error"+filepath)
-            return
+        fp = open(filepath, 'r+')
         content=''
 
         for line in fp:
