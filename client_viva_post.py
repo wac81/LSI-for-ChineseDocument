@@ -9,31 +9,40 @@ import json
 payload = codecs.open('post.txt').read()
 payload = {'text':payload}
 
-payloadfiles = codecs.open('5093992323423423_postfile.txt').read()
-temp =  json.dumps([{'name':'5093992323423423_postfile','text':payloadfiles},{'name':'5093992323423423_postfile','text':payloadfiles}])
-payloadfiles = {'files':temp}
+payloadfiles = codecs.open('3760840152523826487_liuyong').read()
+# temp =  json.dumps([{'name':'5093992323423423_postfile','text':payloadfiles},{'name':'5093992323423423_postfile','text':payloadfiles}])
+temp =  json.dumps([{'name':'3760840152523826487_柳永是哪个朝代的','text':payloadfiles}])
 
-r = requests.post("http://127.0.0.1:3000/getfiles/post",data=payloadfiles)
+payloadfiles = {'files':temp}
+#
+# payloadfiles = {'files':None}
+# r = requests.post("http://127.0.0.1:3000/getfiles/post",data=payloadfiles)
+r = requests.post("http://115.28.254.33:8088/getfiles/post",data=payloadfiles)
 print r
 
-def test_run():
-    # time.sleep(4)
-    for index in range(10):
-        # r = requests.post("http://115.28.254.33:8088/similar/post",data=payload)
-        r = requests.post("http://127.0.0.1:3000/similar/post",data=payload)
-        print r
-    # r = requests.post("http://192.168.11.128:3000/similar/s",data=payload)
 
+# r = requests.post("http://115.28.254.33:8088/similar/post",data=payload)
+# # r = requests.post("http://127.0.0.1:3000/similar/post",data=payload)
+# print r
 
-#单线程顺序测试
-# for index in range(1):
-#     test_run()
-
-#多线程并发
-for index in range(4):
-    t=threading.Thread(target=test_run)
-    # t.daemon = True
-    t.start()
+# def test_run():
+#     # time.sleep(4)
+#     for index in range(10):
+#         r = requests.post("http://115.28.254.33:8088/similar/post",data=payload)
+#         # r = requests.post("http://127.0.0.1:3000/similar/post",data=payload)
+#         print r
+#     # r = requests.post("http://192.168.11.128:3000/similar/s",data=payload)
+#
+#
+# #单线程顺序测试
+# # for index in range(1):
+# #     test_run()
+#
+# #多线程并发
+# for index in range(4):
+#     t=threading.Thread(target=test_run)
+#     # t.daemon = True
+#     t.start()
 
 # threads = []
 # for num in range(0, 10):

@@ -72,11 +72,57 @@ def getfiles(input_text):
         except ValueError:
             abort(404)      # 返回 404
     result = json.loads(files)
-    if len(result)!=0:
-        from similarity_update import sim_update
-        sim_update(result)
+
+    # baobao write files
+    add_files_path = "./news_post_add/"
+    if not os.path.exists(add_files_path):
+        os.mkdir(add_files_path)
+    else:
+        files = os.listdir(add_files_path)
+        for i in files:
+            os.remove(add_files_path + i)
+    for i in result:
+        fp = open(add_files_path + i['name'], 'wb')
+        fp.write(i['text'])
+        fp.close()
+
+    # if len(result)!=0:
+    #     from similarity_update import sim_update
+    #     sim_update(result)
+    print("Run the shell.")
+    os.system('./after_update.sh')
+    # os.system('sh ../cms/task.sh')
+    print("Shell done!")
     print result
     return result
+
+
+def check_prefix(file_in):
+    """
+    baobao add for checking files prefix map
+    :param file_in:  string
+    :return: string
+    """
+    import cPickle
+    # try:
+    #     file_a = file_in.decode('gbk')
+    # except Exception as e:
+    file_a = file_in.decode('utf-8')
+
+    try:
+        fp = open("./prefix_map/filename_map.pkl", 'rb')
+        files = cPickle.load(fp)
+        fp.close()
+    except Exception as e:
+        files = {}
+
+    if files.has_key(file_a):
+        print("From dict %s" % file_a)
+        return files[file_a]
+    else:
+        print("From news %s" % file_in)
+        return file_in
+
 
 def similar_search(request):
     doc = request
@@ -112,6 +158,10 @@ def similar_search(request):
         # print ss[i][0]
         # print files[299]
         fileid=files[ss[i][0]]
+
+        # baobao add 1 line
+        fileid = check_prefix(fileid)
+
         fileid=fileid.split('_')
         singleno = fileid[0]
         singleqz = str(ss[i][1])
