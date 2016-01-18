@@ -1,0 +1,11 @@
+新浪科技讯 北京时间9月12日早间消息，美国科技博客TechCrunch报道称，iPhone 6s中新的Live Photos照片大小将相当于普通1200万像素照片的两倍。
+
+　　Live Photos是iPhone 6s中全新的拍照功能，能记录照片拍摄前后额外3秒钟的视频。在iPhone 6s中，这一新功能将默认开启，而用户在拍照时无需做额外操作。
+
+　　通过Live Photos拍摄的照片可以在安装最新版操作系统的iPhone、iPad、Mac电脑和Apple Watch等设备上查看。苹果还面向第三方开发者开放了Live Photos的API(应用程序接口)。Facebook已表示，将于今年晚些时候使iOS应用支持Live Photos。
+
+　　TechCrunch编辑马修·潘扎利诺(Matthew Panzarino)对Live Photos功能进行了测试。他表示，尽管iPhone摄像头在开启后就能连续捕捉画面，但当前iPhone只会在用户按下快门的瞬间保存一张照片，而新系统将保存快门按下前后的照片并进行压缩，形成新的格式。
+
+　　此外，Twitter用户@DanMatt表示，新的Live Photos格式将捆绑多张JPEG照片，从而可以方便地发送给其他支持Live Photos的设备。苹果的开发者文档显示，用户可以像分享JPEG照片一样分享Live Photos照片。
+
+　　新款iPhone将于9月25日发货，届时外界将可以了解Live Photos的更多信息。(维金)

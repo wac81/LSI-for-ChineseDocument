@@ -19,6 +19,8 @@ import os,re
 from textrank4zh import TextRank4Keyword, TextRank4Sentence
 from LDA_classes.ldaFindCategory import *
 
+#baobao add
+from SentimentMeter.SentimentOne import delete_stop_words
 
 tr4s = TextRank4Sentence(stop_words_file='./stopwords.txt') # 导入停止词
 
@@ -73,6 +75,12 @@ lsi = models.LsiModel.load(project_path + 'lsi/' + 'viva.lsi')
 index = similarities.MatrixSimilarity.load(project_path + 'lsi/' + 'viva.index')
 print('全部加载完成')
 
+#baobao add
+from tgrocery import Grocery
+grocery_name = "./SentimentMeter/SVM_models/svm_for_news"
+grocery = Grocery(grocery_name)
+grocery.load()
+
 # redis_conf = '211.155.92.85'
 redis_conf = '127.0.0.1'
 clientReceiver = redis.Redis(host=redis_conf, port=6379, db=1)
@@ -98,7 +106,7 @@ def delstopwords(content):
     for word, flag in words:
         if (word not in stopwords and flag not in ["/x","/zg","/uj","/ul","/e","/d","/uz","/y"]): #去停用词和其他词性，比如非名词动词等
             result += word.encode('utf-8')  # +"/"+str(w.flag)+" "  #去停用词
-            print result
+            # print result
     return result
 
 
@@ -244,8 +252,10 @@ for item in receiver.listen():
 
         elif item['channel'] == 'classification':
             doc = reqParamList[1]
-            data, data_vec = ldaModel.file_to_vec(doc)
-            out_put, out_put_class = ldaModel.pre(data_vec)
+            #data, data_vec = ldaModel.file_to_vec(doc)
+            #out_put, out_put_class = ldaModel.pre(data_vec)
+            t_pre_result = grocery.predict(delete_stop_words(doc))
+            out_put_class = t_pre_result.predicted_y
             clientSender.publish('classificationResult', reqParamList[0] + '!@#' + out_put_class)
 
 
